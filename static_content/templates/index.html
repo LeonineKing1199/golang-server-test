@@ -2,12 +2,53 @@
 <html>
     <head>
         <title>Golang User Demo</title>
+
         <script type="text/javascript" src="scripts/test.js"></script>
+
+        <!-- Latest compiled and minified CSS for Bootstrap 3 -->
+        <link 
+            rel="stylesheet" 
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+            crossorigin="anonymous">
     </head>
     <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3>Current User List</h3>
+                </div>
+            </div>
 
-        <h1>This is a Heading</h1>
-        <p>This is a paragraph.</p>
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-table-body">
 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    First Name: <input type="text">
+                    Last Name: <input type="text">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-primary">Add User</button>
+                </div>
+            </div>
+        </div>
     </body>
 </html> 
