@@ -1,8 +1,11 @@
 package main
 
-import "database/sql"
-import "net/http"
-import "encoding/json"
+import (
+	"database/sql"
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
 
 // UserData is a simple datatype that we'll use
 // across the project
@@ -21,6 +24,7 @@ func CreateUser(addUser *sql.Stmt) func(http.ResponseWriter, *http.Request) {
 
 		err := decoder.Decode(&userData)
 		if err != nil {
+			fmt.Println(err.Error())
 			resWriter.WriteHeader(http.StatusBadRequest)
 			resWriter.Write([]byte("Invalid data POST'd to server"))
 			return
