@@ -12,6 +12,8 @@ import (
 // the entire project
 var DBHandle *sql.DB
 
+// this is used to help bootstrap a database in case it
+// doesn't already exist on the system
 func createDB(dbname, user, password string) {
 	db, err := sql.Open("mysql", user+":"+password+"@/")
 	defer db.Close()

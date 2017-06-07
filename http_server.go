@@ -55,6 +55,8 @@ func StartServer() {
 
 	go func() {
 		fmt.Println("starting server, listening at: " + serverAddress)
+		fmt.Println("press ctrl-c to end")
+
 		if err := server.ListenAndServe(); err != nil {
 			log.Fatal(err)
 		}

@@ -10,7 +10,7 @@ import (
 // RootHandler is our most base handler and will simply render the homepage
 func RootHandler(res http.ResponseWriter, req *http.Request) {
 
-	if req.Method != "GET" {
+	if req.Method != "GET" || req.URL.Path != "/" {
 		http.NotFound(res, req)
 		return
 	}
@@ -49,11 +49,14 @@ func RootHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	rows.Close()
-
 	tx.Commit()
+
 	// decent protection against XSS
 	res.Header().Set("Content-Security-Policy", "script-src 'self'")
 
-	templateBase, _ := template.ParseFiles("static_content/templates/index.html")
+	templateBase, err := template.ParseFiles("static_content/templates/index.html")
+	if err != nil {
+		Send500(res, req)
+	}
 	templateBase.Execute(res, struct{ Users []UserData }{Users: users})
 }

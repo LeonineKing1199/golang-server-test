@@ -42,9 +42,6 @@ func CreateUser(addUser *sql.Stmt) func(http.ResponseWriter, *http.Request) {
 
 		defer req.Body.Close()
 
-		// we make sure to escape the strings, very crucial
-		// but our header's content security policy should be
-		// our ultimate fail-safe
 		firstName := html.EscapeString(userData.FirstName)
 		lastName := html.EscapeString(userData.LastName)
 
