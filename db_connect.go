@@ -46,6 +46,7 @@ func createDB(dbname, user, password string) {
 
 // InitDatabase establishes our MySQL connection
 func InitDatabase() {
+	// customize these for your own SQL users and passwords
 	user := "christian"
 	password := "test123"
 	dbname := "testinguserdatabase"

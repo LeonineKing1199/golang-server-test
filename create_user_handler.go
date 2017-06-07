@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"html"
 	"net/http"
 )
@@ -17,10 +16,9 @@ type UserData struct {
 
 // CreateUser adds a user to our database, using the global
 // DBHandler as specified in db_connect.go
-// We add a user to the database and then re-fetch the whole thing and return
-// it to the user so the front-end can re-render
-// This is more friendly for single-page app design and not so much for
-// multi-page apps which use formal form submissions followed by a page request
+// Design rationale is that instead of simply re-rendering the entire HTML doc,
+// we can instead just give the client a list of updated users so our server can
+// function as an API that can be hit by clients that aren't browsers
 func CreateUser(addUser *sql.Stmt) func(http.ResponseWriter, *http.Request) {
 	return func(resWriter http.ResponseWriter, req *http.Request) {
 
@@ -38,14 +36,15 @@ func CreateUser(addUser *sql.Stmt) func(http.ResponseWriter, *http.Request) {
 
 		err := decoder.Decode(&userData)
 		if err != nil {
-			fmt.Println(err.Error())
 			Send400(resWriter, req)
 			return
 		}
 
 		defer req.Body.Close()
 
-		// we make sure to escape the strings, just to be extra safe
+		// we make sure to escape the strings, very crucial
+		// but our header's content security policy should be
+		// our ultimate fail-safe
 		firstName := html.EscapeString(userData.FirstName)
 		lastName := html.EscapeString(userData.LastName)
 
@@ -97,7 +96,6 @@ func CreateUser(addUser *sql.Stmt) func(http.ResponseWriter, *http.Request) {
 
 		err = tx.Commit()
 		if err != nil {
-			fmt.Println(err.Error())
 			tx.Rollback()
 			Send500(resWriter, req)
 			return

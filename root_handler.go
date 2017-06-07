@@ -15,6 +15,9 @@ func RootHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// could be too paranoid to wrap a SELECT in a transaction
+	// but the goal is to prevent reads from running while
+	// rows are being added to the table
 	tx, err := DBHandle.Begin()
 	if err != nil {
 		Send500(res, req)

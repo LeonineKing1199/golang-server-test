@@ -3,7 +3,7 @@
     <head>
         <title>Golang User Demo</title>
 
-        <script type="text/javascript" src="scripts/test.js"></script>
+        <script type="text/javascript" src="scripts/main.js"></script>
 
         <!-- Latest compiled and minified CSS for Bootstrap 3 -->
         <link 
@@ -31,10 +31,10 @@
                             </tr>
                         </thead>
                         <tbody id="user-table-body">
-                            {{range $i, $value := .Users}}
+                            {{range $i, $user := .Users}}
                                 <tr>
-                                    <td>{{$value.FirstName}}</td>
-                                    <td>{{$value.LastName}}</td>
+                                    <td>{{$user.FirstName}}</td>
+                                    <td>{{$user.LastName}}</td>
                                 </tr>
                             {{end}}
                         </tbody>
@@ -52,7 +52,11 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <button id="add-user-btn" type="button" class="btn btn-primary">Add User</button>
+                    <button 
+                        id="add-user-btn"
+                        type="button" 
+                        class="btn btn-primary"
+                        style="margin-bottom: 100px;">Add User</button>
                 </div>
             </div>
         </div>
