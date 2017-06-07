@@ -16,9 +16,21 @@ func makeMultiplexer() *http.ServeMux {
 
 	rootHandler := http.HandlerFunc(RootHandler)
 	fileHandler := http.FileServer(http.Dir("./static_content/"))
-	createHandler := http.HandlerFunc(CreateUser(nil))
 
-	serveMux.Handle("/users", createHandler)
+	addUser, err := DBHandle.Prepare(`
+		INSERT INTO UserData (FirstName, LastName)
+		VALUES (?, ?)
+	`)
+
+	defer addUser.Close()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	addUserHandler := http.HandlerFunc(CreateUser(addUser))
+
+	serveMux.Handle("/users", addUserHandler)
 	serveMux.Handle("/scripts/", fileHandler)
 	serveMux.Handle("/", rootHandler)
 
@@ -35,13 +47,14 @@ func StartServer() {
 	stop := make(chan os.Signal)
 	signal.Notify(stop, os.Interrupt)
 
-	serverAddress := ":8080"
-	server := &http.Server{Addr: serverAddress, Handler: makeMultiplexer()}
-
 	InitDatabase()
 	defer DBHandle.Close()
 
+	serverAddress := ":8080"
+	server := &http.Server{Addr: serverAddress, Handler: makeMultiplexer()}
+
 	go func() {
+		fmt.Println("starting server, listening at: " + serverAddress)
 		if err := server.ListenAndServe(); err != nil {
 			log.Fatal(err)
 		}

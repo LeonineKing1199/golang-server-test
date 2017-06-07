@@ -72,5 +72,9 @@ func InitDatabase() {
 	}
 
 	db.Exec("USE " + dbname)
+	db.Exec("SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ")
+
 	DBHandle = db
+
+	fmt.Println("Successfully established database connection and initialized global handle")
 }
